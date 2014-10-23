@@ -34,7 +34,7 @@ if(is_file($urlimg2)){
       $urlfinal='../menuimg/jp.png';
         
    }
-   var_dump(is_file($urlprova));
+   
    $out.= "<div>"
    .$upast."<br>"
    .$urlimg2."<img src='$urlfinal' width='10%' >"
