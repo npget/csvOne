@@ -1,0 +1,112 @@
+/*
+ * To change this license header, choose License Headers in Project Properties.
+ * To change this template file, choose Tools | Templates
+ * and open the template in the editor.
+ */
+package csv;
+
+import java.io.BufferedReader;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
+import java.io.IOException;
+
+/**
+ *
+ * @author npget
+ */
+public class CsV {
+
+    /**
+     * @param args the command line arguments
+     */
+    public static void main(String[] args) throws IOException {
+        // TODO code application logic here
+        
+        CsV obj = new CsV();
+	obj.sezioni();
+    }
+    
+     public void sezioni() throws FileNotFoundException, IOException  {
+ 
+	String csvFile = "/home/npget/Downloads/capitoli.csv";
+	BufferedReader br = null;
+	String line = "";
+	String cvsSplitBy = ",";
+ 
+	try {
+ 
+		br = new BufferedReader(new FileReader(csvFile));
+		while ((line = br.readLine()) != null) {
+ 
+		        // use comma as separator
+			String[] csvrighe = line.split(cvsSplitBy);
+ 
+			System.out.println("[Id= " + csvrighe[0] 
+                                 + " , name=" + csvrighe[3] + "]");
+ 
+		}
+ 
+	} catch (FileNotFoundException e) {
+		e.printStackTrace();
+	} catch (IOException e) {
+		e.printStackTrace();
+	} finally {
+		if (br != null) {
+			try {
+				br.close();
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+		}
+	}
+ 
+	System.out.println("Done");
+  }
+ 
+     
+     
+     public void Archivio() throws FileNotFoundException, IOException  {
+ 
+	String csvFile = "/home/npget/Downloads/Archivio.csv";
+	BufferedReader br = null;
+	String line = "";
+	String cvsSplitBy = ",";
+ 
+	try {
+ 
+		br = new BufferedReader(new FileReader(csvFile));
+		while ((line = br.readLine()) != null) {
+ 
+		        // use comma as separator
+			String[] csvrighe = line.split(cvsSplitBy);
+ 
+			System.out.println("[Id= " + csvrighe[0] 
+                                 + " , name=" + csvrighe[3] + "]");
+ 
+		}
+ 
+	} catch (FileNotFoundException e) {
+		e.printStackTrace();
+	} catch (IOException e) {
+		e.printStackTrace();
+	} finally {
+		if (br != null) {
+			try {
+				br.close();
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+		}
+	}
+ 
+	System.out.println("Done");
+  }
+
+    private void SimpleFormTest() {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+ 
+     
+     
+}
+
