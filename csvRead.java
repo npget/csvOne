@@ -27,8 +27,8 @@ public class csvFormx extends javax.swing.JInternalFrame {
      */
     public csvFormx() throws IOException {
         initComponents();
-           CaricaSezioni();// questo Funziona ...
-    CaricaArchivioTot();//questa è una roba che non so come gestire almeno ci sto provando ...
+           CaricaSezioni();
+    CaricaArchivioTot();
     }
     
     
@@ -143,12 +143,19 @@ jTable1.getModel().setValueAt(names[6],i,6);
 //jTable1.getModel().setValueAt(lsarch[2],i,2); 
 //jTable1.getModel().setValueAt(lsarch[3],i,3); 
 
-
+       // cosi ritorna object quanti i giri di while 
+ //System.out.println(alist.toArray());
+ 
+  // cosi ritorna tutto  solo un vettore  
+ System.out.println(names[0]);
+ 
 
                 i++;
             }
-       
- System.out.println(alist);
+       // cosi ritorna object 
+ //System.out.println(alist.toArray());
+ 
+ 
 jTable1.setModel(new javax.swing.table.DefaultTableModel(
      new Object [][] {
          {"ID","CKA","DF","ASFF","ASASF"},
