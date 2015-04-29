@@ -77,6 +77,15 @@ public class csvFormx extends javax.swing.JInternalFrame {
 
     public void CaricaArchivioTot() throws FileNotFoundException, IOException {
 
+        
+               
+ jTable1.setModel(new javax.swing.table.DefaultTableModel(
+           new Object [][] {{"id", "ddd"},
+               {"id", "ddd"}}, 
+            new String [] {
+                "id", "ddd"
+            }
+        ));
        
         String csvFilearch = "/home/npget/NetBeansProjects/csvOne/src/gui/archivio.csv";
         BufferedReader br = null;
@@ -86,51 +95,42 @@ public class csvFormx extends javax.swing.JInternalFrame {
         List lsarch = new ArrayList();
 
  // int i=0;
-         int i = 0;
-String[] columnNames = {"First Name",
-                                "Last Name",
-                                "Sport",
-                                "# of Years",
-                                "Vegetarian"};
-    //  jTable1.getModel().setValueAt("data",0,0);
-   //         jTable1.getModel().setValueAt("data",1,1);
-       
-
-        Object[][] data = {
-	    {"Kathy", "Smith",
-	     "Snowboarding", new Integer(5), new Boolean(false)},
-	    {"John", "Doe",
-	     "Rowing", new Integer(3), new Boolean(true)},
-	    {"Sue", "Black",
-	     "Knitting", new Integer(2), new Boolean(false)},
-	    {"Jane", "White",
-	     "Speed reading", new Integer(20), new Boolean(true)},
-	    {"Joe", "Brown",
-	     "Pool", new Integer(10), new Boolean(false)}
-        };
-
-         jTable1  = new JTable(data,columnNames);
         
- //jTable1.getModel().setValueAt(data[0][0],i,0); 
-// jTable1.getModel().setValueAt(data[1][0],i,1);
-//jTable1.getModel().setValueAt(data,0,0);
+
        
+           int i = 0;
 try {
 
 br = new BufferedReader(new FileReader(csvFilearch));
  while ((line = br.readLine()) != null) {
 
-               
+              
+//Object[][] dataq ={line.split(cvsSplitBy)};
 
-/*  String[] csvrighe = line.split(cvsSplitBy);
-      lsarch.add(csvrighe);
-//jTable1.getModel().setValueAt(lsarch,i,0); 
-*/
+  String[] csvrighe = line.split(cvsSplitBy);
+  lsarch.add(csvrighe);
+
+//System.out.println("Value of data: "+lsarch.get(i));
+System.out.println("Value of data: "+csvrighe[4]);
+  
+jTable1.getModel().setValueAt(csvrighe[4],i,0);
+jTable1.getModel().setValueAt(csvrighe[3],i,1);
+
+
+
+
+// jTable1.getModel().setValueAt(data[1][0],i,1);
+// jTable1.getModel().setValueAt(data[0][0],i,2); 
+//jTable1.getModel().setValueAt(lsarch.get(1),i,1);
+//jTable1.getModel().setValueAt(lsarch[2],i,2); 
+//jTable1.getModel().setValueAt(lsarch[3],i,3); 
+
 
 
                 i++;
             }
-            
+       
+
             
             
 
