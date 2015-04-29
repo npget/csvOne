@@ -27,8 +27,8 @@ public class csvFormx extends javax.swing.JInternalFrame {
      */
     public csvFormx() throws IOException {
         initComponents();
-           CaricaSezioni();
-    CaricaArchivioTot();
+           CaricaSezioni();// questo Funziona ...
+    CaricaArchivioTot();//questa è una roba che non so come gestire almeno ci sto provando ...
     }
     
     
