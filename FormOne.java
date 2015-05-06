@@ -33,7 +33,9 @@ public class FormOne extends javax.swing.JInternalFrame {
         
          jTable2.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
-                jTable2MouseClicked(evt);
+              //  jTable2MouseClicked(evt);
+            
+            OpenFileOnCLick(evt);
             }
         });
         
@@ -141,7 +143,7 @@ public class FormOne extends javax.swing.JInternalFrame {
                                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                     .addComponent(FieldName, javax.swing.GroupLayout.PREFERRED_SIZE, 275, javax.swing.GroupLayout.PREFERRED_SIZE)
                                     .addComponent(FieldNote, javax.swing.GroupLayout.PREFERRED_SIZE, 189, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                            .addComponent(labelinfo, javax.swing.GroupLayout.PREFERRED_SIZE, 300, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addComponent(labelinfo, javax.swing.GroupLayout.PREFERRED_SIZE, 422, javax.swing.GroupLayout.PREFERRED_SIZE))
                         .addGap(0, 43, Short.MAX_VALUE)))
                 .addContainerGap())
         );
@@ -166,7 +168,7 @@ public class FormOne extends javax.swing.JInternalFrame {
                 .addComponent(labelinfo, javax.swing.GroupLayout.PREFERRED_SIZE, 28, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 360, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(18, Short.MAX_VALUE))
+                .addContainerGap(21, Short.MAX_VALUE))
         );
 
         pack();
@@ -187,26 +189,34 @@ public class FormOne extends javax.swing.JInternalFrame {
      
         //PRENDO lid della combo
         int idsub=(int) ComboLista.getSelectedIndex();        
-        //Per primo la selezione CoreSelect 
-         if(!"0".equals(idsub)){
-       filters.add(RowFilter.regexFilter(Integer.toString(idsub),6));
+       
+
+        // Se questa la decommento non mi riempie la table con tutti i risultato 
+        //eg: cerco Acea dentro i  nomi me ne tira fuori 3 invece sono 19 
+        // Se la decommento mi ritrovo meno risultati 
+//Per primo la selezione CoreSelect 
+        //LO 0 esiste per lasciare la ricerca esclusa 
+       /*  if(!"0".equals(idsub)){
+             
+       String  idcat=  Integer.toString(idsub);
+       filters.add(RowFilter.regexFilter(idcat,1));
          }
-        
+        */
          if(!"".equals(FieldNum.getText())){
-        filters.add(RowFilter.regexFilter(FieldNum.getText(),2));
+        filters.add(RowFilter.regexFilter(FieldNum.getText(),3));
          }
          
           if(!"".equals(FieldName.getText())){
-       filters.add(RowFilter.regexFilter("(?i)"+FieldName.getText(),3));
+       filters.add(RowFilter.regexFilter("(?i)"+FieldName.getText(),4));
          }
         
         
         if(!"".equals(FieldData.getText())){
-        filters.add(RowFilter.regexFilter(FieldData.getText(),4));
+        filters.add(RowFilter.regexFilter(FieldData.getText(),5));
          }
         
   if(   !"".equals(FieldNote.getText())){
-        filters.add(RowFilter.regexFilter("(?i)"+FieldNote.getText(),5));
+        filters.add(RowFilter.regexFilter("(?i)"+FieldNote.getText(),6));
          }
   
   // qui non è tanto chiaro ma ci sto 
@@ -314,7 +324,7 @@ public class FormOne extends javax.swing.JInternalFrame {
             //definisco il modello della tabella un pezzo alla volta, per avere maggiore flessibilita'
             final DefaultTableModel modelloArch = new DefaultTableModel();
             //dichiaro le colonne
-            modelloArch.setColumnIdentifiers(new String[]{"IDA", "CodBar", "Numero", "Nome", "Data","Note","SubCat"});
+            modelloArch.setColumnIdentifiers(new String[]{"IDA", "SubCat", "Cod-Bar", "Numero", "Nome","mm/yyyy","Note"});
  
             //aggiungo i dati al modello iterando sulla lista popolata da file
             for (String[] riga : righeArchivio) {
@@ -322,12 +332,13 @@ public class FormOne extends javax.swing.JInternalFrame {
                 final Vector<String> rigaDati = new Vector<>();
                 //aggiungo i campi di interesse nel vettore
                 rigaDati.add(riga[0]);
+                rigaDati.add(riga[1]);
                 rigaDati.add(riga[2]);
                 rigaDati.add(riga[3]);
                 rigaDati.add(riga[4]);
                 rigaDati.add(riga[5]);
                 rigaDati.add(riga[6]);
-                rigaDati.add(riga[1]);
+               
                 //aggiungo il vettore al modello della tabella
                 modelloArch.addRow(rigaDati);
             }
@@ -367,7 +378,72 @@ public class FormOne extends javax.swing.JInternalFrame {
                         " Vale: " + jTable2.getValueAt(row, column)
         );
     }
+    
+    
+    public void OpenFileOnCLick(java.awt.event.MouseEvent evt){
+        //Tipo di ricerca su questa..a 3 mi serve il primo per uguaglianza e il terzo come nome file da aprire 
+        //"1","3","../f/files/f_1004/9/21/TT1xSFisdO_288_.pdf"
+        
+        
+        File f = new File("NpGet/archfile.csv");
+        String archfile = f.getPath();
+         Point point = evt.getPoint();
+          String line = null; 
+           int row;
+           //column;
+       row = jTable2.rowAtPoint(point);
+   //     column = jTable2.columnAtPoint(point);
+         String valid;
+          valid =(String) jTable2.getValueAt(row,0);
+          
+   List<String[]> righeArcFile = new ArrayList<>();
+     
+        try(FileReader csvFile = new FileReader(archfile); BufferedReader br = new BufferedReader(csvFile)) {
  
+  while ((line = br.readLine()) != null) {
+   righeArcFile.add(line.split(","));
+ 
+  }
+  
+  
+  
+               
+  int i=0;
+     for (String[] riga : righeArcFile) {
+                //per ogni riga letta dal file e salvata in righeArchivio creo un vettore
+    // final Vector<String> rigaDati = new Vector<>();
+                //aggiungo i campi di interesse nel vettore
+      //          rigaDati.add(riga[0]);
+        //        rigaDati.add(riga[2]);
+                
+ labelinfo.setText("id:_"+riga[0]+"-Val_"+GetFileName(riga[2])+"-cek_"+valid);
+ //QUI nn cè niente da fare ..         
+ if(valid == riga[0]){
+                System.out.println("Successo:"+riga[2]);
+              }          
+            
+                //aggiungo il vettore al modello della tabella
+                //modelloArch.addRow(rigaDati);
+      i++;    
+     }
+ 
+
+ 
+  
+          
+      //        System.out.println(righeArcFile.toString());
+            } catch (IOException e) {
+            e.printStackTrace();
+        }
+  
+    }
+ 
+    public static String GetFileName(String path){
+        
+        return path.substring(path.lastIndexOf("/")+1, path.length());
+        
+    
+    }
   
     
     
