@@ -381,7 +381,10 @@ public class FormOne extends javax.swing.JInternalFrame {
     
     
     public void OpenFileOnCLick(java.awt.event.MouseEvent evt){
-        //Tipo di ricerca su questa..a 3 mi serve il primo per uguaglianza e il terzo come nome file da aprire 
+        //Tipo di ricerca su questa. mi serve il primo id  per uguaglianza 
+        //e il terzo come nome file da aprire 
+        //NB: Possono essere anche + file ma al massimo sono 3 o 4 .. 
+        // e li apro tutti insieme per il momento ... 
         //"1","3","../f/files/f_1004/9/21/TT1xSFisdO_288_.pdf"
         
         
