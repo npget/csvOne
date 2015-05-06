@@ -7,6 +7,7 @@ package gui;
 
 import java.awt.Point;
 import java.io.BufferedReader;
+import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -67,6 +68,8 @@ public class FormOne extends javax.swing.JInternalFrame {
         setResizable(true);
         setTitle("FormArcher");
         setAutoscrolls(true);
+
+        ComboLista.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "0" }));
 
         BtnGo.setText("Go!");
         BtnGo.addActionListener(new java.awt.event.ActionListener() {
@@ -139,7 +142,7 @@ public class FormOne extends javax.swing.JInternalFrame {
                                     .addComponent(FieldName, javax.swing.GroupLayout.PREFERRED_SIZE, 275, javax.swing.GroupLayout.PREFERRED_SIZE)
                                     .addComponent(FieldNote, javax.swing.GroupLayout.PREFERRED_SIZE, 189, javax.swing.GroupLayout.PREFERRED_SIZE)))
                             .addComponent(labelinfo, javax.swing.GroupLayout.PREFERRED_SIZE, 300, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addGap(0, 48, Short.MAX_VALUE)))
+                        .addGap(0, 43, Short.MAX_VALUE)))
                 .addContainerGap())
         );
         layout.setVerticalGroup(
@@ -180,25 +183,30 @@ public class FormOne extends javax.swing.JInternalFrame {
       
         
         // preparo un array list per i filtraggi ... 
-        java.util.List<RowFilter<Object,Object>> filters = new ArrayList<RowFilter<Object,Object>>(4);
+        java.util.List<RowFilter<Object,Object>> filters = new ArrayList<RowFilter<Object,Object>>();
      
-             //Imposto vari filtri sul nuovo array 
+        //PRENDO lid della combo
+        int idsub=(int) ComboLista.getSelectedIndex();        
+        //Per primo la selezione CoreSelect 
+         if(!"0".equals(idsub)){
+       filters.add(RowFilter.regexFilter(Integer.toString(idsub),6));
+         }
         
          if(!"".equals(FieldNum.getText())){
-        filters.add(RowFilter.regexFilter(FieldNum.getText(), 2));
+        filters.add(RowFilter.regexFilter(FieldNum.getText(),2));
          }
          
           if(!"".equals(FieldName.getText())){
-       filters.add(RowFilter.regexFilter("(?i)"+FieldName.getText(), 3));
+       filters.add(RowFilter.regexFilter("(?i)"+FieldName.getText(),3));
          }
         
         
         if(!"".equals(FieldData.getText())){
-        filters.add(RowFilter.regexFilter(FieldData.getText(), 4));
+        filters.add(RowFilter.regexFilter(FieldData.getText(),4));
          }
         
   if(   !"".equals(FieldNote.getText())){
-        filters.add(RowFilter.regexFilter("(?i)"+FieldNote.getText(), 5));
+        filters.add(RowFilter.regexFilter("(?i)"+FieldNote.getText(),5));
          }
   
   // qui non è tanto chiaro ma ci sto 
@@ -228,8 +236,12 @@ public class FormOne extends javax.swing.JInternalFrame {
 
     
     public void CoreSelect() throws IOException {
+        
+        
+         File f = new File("NpGet/sezioni.csv");
+        String csvFile = f.getPath();
  
-        String csvFile = "/home/npget/NetBeansProjects/csvOne/src/gui/sezioni.csv";
+     
         // mettere a null una variabile non inizializzata e' abbastanza diffuso.
         //inoltre non consumo una stringa vuota che va allocata in memoria (ottimizzazione)
         String line = null; 
@@ -258,7 +270,7 @@ public class FormOne extends javax.swing.JInternalFrame {
                 final Sezione sezione = new Sezione(csvrighe[0], csvrighe[3]);
                 ComboLista.addItem(sezione);
             }
- 
+            
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -268,7 +280,10 @@ public class FormOne extends javax.swing.JInternalFrame {
     
     
     public void CoreResult() throws IOException {
-        String csvFilearch = "/home/npget/NetBeansProjects/csvOne/src/gui/archivio.csv";
+        
+   File f = new File("NpGet/archivio.csv");
+        String csvFilearch = f.getPath();
+        
         String line = null; //vedi sopra
  
         //preparo una lista che contenga come ciascun elemento una riga del file, spezzata fra le virgole
@@ -299,7 +314,7 @@ public class FormOne extends javax.swing.JInternalFrame {
             //definisco il modello della tabella un pezzo alla volta, per avere maggiore flessibilita'
             final DefaultTableModel modelloArch = new DefaultTableModel();
             //dichiaro le colonne
-            modelloArch.setColumnIdentifiers(new String[]{"IDA", "CodBar", "Numero", "Nome", "Data","Note"});
+            modelloArch.setColumnIdentifiers(new String[]{"IDA", "CodBar", "Numero", "Nome", "Data","Note","SubCat"});
  
             //aggiungo i dati al modello iterando sulla lista popolata da file
             for (String[] riga : righeArchivio) {
@@ -312,6 +327,7 @@ public class FormOne extends javax.swing.JInternalFrame {
                 rigaDati.add(riga[4]);
                 rigaDati.add(riga[5]);
                 rigaDati.add(riga[6]);
+                rigaDati.add(riga[1]);
                 //aggiungo il vettore al modello della tabella
                 modelloArch.addRow(rigaDati);
             }
