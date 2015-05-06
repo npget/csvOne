@@ -27,8 +27,8 @@ public class FormOne extends javax.swing.JInternalFrame {
      */
     public FormOne() throws IOException {
         initComponents();
-          caricaSezioni();
-        caricaArchivioTot();
+          CoreSelect();
+        CoreResult();
         
          jTable2.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
@@ -171,32 +171,41 @@ public class FormOne extends javax.swing.JInternalFrame {
 
     
       //Filtra in base al testo 
-    /*
+    
     private void BtnGoActionPerformed(java.awt.event.ActionEvent evt) {                                      
-        // TODO add your handling code here:
+            // TODO add your handling code here:
      
         //Mi faccio dare il sorter impostato nella tabella (vedi caricaArchivioTot())
         final TableRowSorter<DefaultTableModel> sorter = (TableRowSorter<DefaultTableModel>) jTable2.getRowSorter();
-       
-        //Imposto un filtro sul sorter
+      
+        
+        // preparo un array list per i filtraggi ... 
+        java.util.List<RowFilter<Object,Object>> filters = new ArrayList<RowFilter<Object,Object>>(4);
+     
+             //Imposto vari filtri sul nuovo array 
         
          if(!"".equals(FieldNum.getText())){
-        sorter.setRowFilter(RowFilter.regexFilter(FieldNum.getText(), 2));
+        filters.add(RowFilter.regexFilter(FieldNum.getText(), 2));
          }
          
           if(!"".equals(FieldName.getText())){
-        sorter.setRowFilter(RowFilter.regexFilter("(?i)"+FieldName.getText(), 3));
+       filters.add(RowFilter.regexFilter("(?i)"+FieldName.getText(), 3));
          }
         
         
         if(!"".equals(FieldData.getText())){
-        sorter.setRowFilter(RowFilter.regexFilter(FieldData.getText(), 4));
+        filters.add(RowFilter.regexFilter(FieldData.getText(), 4));
          }
         
   if(   !"".equals(FieldNote.getText())){
-        sorter.setRowFilter(RowFilter.regexFilter("(?i)"+FieldNote.getText(), 5));
+        filters.add(RowFilter.regexFilter("(?i)"+FieldNote.getText(), 5));
          }
-           
+  
+  // qui non è tanto chiaro ma ci sto 
+       RowFilter<Object,Object> serviceFilter = RowFilter.andFilter(filters);
+  
+// sparo tutto sul sorter iniziale 
+       sorter.setRowFilter(serviceFilter);    
         
         /*
          * Il filtro nasconde le righe che non matchano come espressione regolare, con il testo del campo fielddate, 
@@ -207,9 +216,10 @@ public class FormOne extends javax.swing.JInternalFrame {
          * vedi https://docs.oracle.com/javase/8/docs/api/javax/swing/RowFilter.html
          */
  
-/*        
+        
+     
     }                                     
-*/
+
 
 
     private void FieldNoteActionPerformed(java.awt.event.ActionEvent evt) {                                          
@@ -217,7 +227,7 @@ public class FormOne extends javax.swing.JInternalFrame {
     }                                         
 
     
-    public void caricaSezioni() throws IOException {
+    public void CoreSelect() throws IOException {
  
         String csvFile = "/home/npget/NetBeansProjects/csvOne/src/gui/sezioni.csv";
         // mettere a null una variabile non inizializzata e' abbastanza diffuso.
@@ -255,122 +265,9 @@ public class FormOne extends javax.swing.JInternalFrame {
     }
     
     
-    //provo con un nuova function al button
-      private void BtnGoActionPerformed(java.awt.event.ActionEvent evt) {                                      
-        // TODO add your handling code here:
-     
-        //Mi faccio dare il sorter impostato nella tabella (vedi caricaArchivioTot())
-        final TableRowSorter<DefaultTableModel> sorter = (TableRowSorter<DefaultTableModel>) jTable2.getRowSorter();
-       java.util.List<RowFilter<Object,Object>> filters = new ArrayList<RowFilter<Object,Object>>(3);
-        //Imposto un filtro sul sorter
-        
-         if(!"".equals(FieldNum.getText())){
-        filters.add(RowFilter.regexFilter(FieldNum.getText(), 2));
-         }
-         
-          if(!"".equals(FieldName.getText())){
-       filters.add(RowFilter.regexFilter("(?i)"+FieldName.getText(), 3));
-         }
-        
-        
-        if(!"".equals(FieldData.getText())){
-        filters.add(RowFilter.regexFilter(FieldData.getText(), 4));
-         }
-        
-  if(   !"".equals(FieldNote.getText())){
-        filters.add(RowFilter.regexFilter("(?i)"+FieldNote.getText(), 5));
-         }
-       RowFilter<Object,Object> serviceFilter = RowFilter.andFilter(filters);
-        sorter.setRowFilter(serviceFilter);    
-        
-        /*
-         * Il filtro nasconde le righe che non matchano come espressione regolare, con il testo del campo fielddate, 
-         * usando come dato quello della colonna 4
-         * Per generare questo filtro, si usa il metodo predefinito RowFilter.regexFilter(valore, colonne da confrontare...)
-         * RowFilter fornisce anche altri metodi standard di filtraggio (e.g. confrontando con una Data, un numero, o combinando
-         * con gli operatori booleani)
-         * vedi https://docs.oracle.com/javase/8/docs/api/javax/swing/RowFilter.html
-         */
- 
-        
-    }                                
-    
-    public void caricaArchivioTotNew() throws IOException {
-        String csvFilearch = "/home/npget/NetBeansProjects/csvOne/src/gui/archivio.csv";
-        String line = null; //vedi sopra
- 
-        //preparo una lista che contenga come ciascun elemento una riga del file, spezzata fra le virgole
-        List<String[]> righeArchivio = new ArrayList<>();
-        /*
-         * In Java e' buona pratica dichiarare le variabili con l'interfaccia piu' generica a cui appartengono quando possibile
-         * Ad esempio, benche' ho creato una lista gestita internamente come array (ArrayList), nella dichiarazione uso List che e'
-         * la sua interfaccia. Il vantaggio e' che si puo' successivamente cambiare l'implementazione specifica della lista da ArrayList
-         * ad altro, senza dover modificare tutti i riferimenti alla mia variabile, perche' i riferimenti "vedono" la mia lista con il
-         * suo tipo generico (List), che non cambia con la specifica implementazione.
-         *
-         * E' buona prassi specificare il tipo di oggetti contenuti nella Lista, usando la notazione fra parentesi angolaris.
-         * List<String[]> e' una lista in cui ciascun elemento e' un array di Stringhe
-         * Nella espressione assegnata uso ArrayList<>() senza specificare il tipo di elementi, perche' il compilatore (da java7+)
-         * e' in grado di inferirlo da solo a partire dalla dichiarazione
-         */
- 
-        //vedi sopra per la sintassi try(...) {...}
-        try(FileReader csvArchReader = new FileReader(csvFilearch); BufferedReader br = new BufferedReader(csvArchReader)) {
- 
-            while ((line = br.readLine()) != null) {
- 
-                //Per ogni riga del file aggiungo un array di valori alla lista dinamica
-                righeArchivio.add(line.split(","));
- 
-            }
- 
-            //definisco il modello della tabella un pezzo alla volta, per avere maggiore flessibilita'
-            final DefaultTableModel modelloArch = new DefaultTableModel();
-            //dichiaro le colonne
-            modelloArch.setColumnIdentifiers(new String[]{"IDA", "CodBar", "Numero", "Nome", "Data","Note"});
- 
-            //aggiungo i dati al modello iterando sulla lista popolata da file
-            for (String[] riga : righeArchivio) {
-                //per ogni riga letta dal file e salvata in righeArchivio creo un vettore
-                final Vector<String> rigaDati = new Vector<>();
-                //aggiungo i campi di interesse nel vettore
-                
-                rigaDati.add(riga[0]);
-                rigaDati.add(riga[2]);
-                rigaDati.add(riga[3]);
-                rigaDati.add(riga[4]);
-                rigaDati.add(riga[5]);
-                rigaDati.add(riga[6]);
-                //aggiungo il vettore al modello della tabella
-                modelloArch.addRow(rigaDati);
-            }
- 
-            /*
-             * Creo un'istanza di una classe che gestisce l'ordinamento dei dati per il nostro modello 
-             * di tabella, che passo come argomento
-             * Questo oggetto servira' in seguito per eseguire il filtro dei dati!
-             *
-             * vedi anche https://docs.oracle.com/javase/tutorial/uiswing/components/table.html#sorting
-             */
-            final TableRowSorter<DefaultTableModel> sorter = new TableRowSorter<>(modelloArch);
-            
-            //imposto nella tabella il modello e l'oggetto che fara' l'ordinamento
-            jTable2.setModel(modelloArch);
-            jTable2.setRowSorter(sorter);
- 
- 
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
- 
-    }
- 
     
     
-    
-    
-    
-    public void caricaArchivioTot() throws IOException {
+    public void CoreResult() throws IOException {
         String csvFilearch = "/home/npget/NetBeansProjects/csvOne/src/gui/archivio.csv";
         String line = null; //vedi sopra
  
