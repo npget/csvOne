@@ -5,17 +5,23 @@
  */
 package gui;
 
+import java.awt.Desktop;
 import java.awt.Point;
 import java.io.BufferedReader;
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Vector;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javax.swing.JFrame;
 import javax.swing.RowFilter;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableRowSorter;
+
 
 /**
  *
@@ -27,15 +33,21 @@ public class FormOne extends javax.swing.JInternalFrame {
      * Creates new form FormOne
      */
     public FormOne() throws IOException {
+            setTitle(" ArcherGest By NpGet");
         initComponents();
           CoreSelect();
         CoreResult();
         
          jTable2.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
-              //  jTable2MouseClicked(evt);
+                try {
+                    //  jTable2MouseClicked(evt);
+
+                    OpenFileOnCLick(evt);
+                } catch (IOException ex) {
+                    Logger.getLogger(FormOne.class.getName()).log(Level.SEVERE, null, ex);
+                }
             
-            OpenFileOnCLick(evt);
             }
         });
         
@@ -63,12 +75,15 @@ public class FormOne extends javax.swing.JInternalFrame {
         FieldNote = new javax.swing.JTextField();
         jLabel4 = new javax.swing.JLabel();
         labelinfo = new javax.swing.JLabel();
+        lblin = new javax.swing.JLabel();
+        jScrollPane1 = new javax.swing.JScrollPane();
+        jlbld = new javax.swing.JTextArea();
 
         setClosable(true);
         setIconifiable(true);
         setMaximizable(true);
         setResizable(true);
-        setTitle("FormArcher");
+        setTitle(" ArcherGest By NpGet");
         setAutoscrolls(true);
 
         ComboLista.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "0" }));
@@ -95,6 +110,8 @@ public class FormOne extends javax.swing.JInternalFrame {
                 "Title 1", "Title 2", "Title 3", "Title 4"
             }
         ));
+        jTable2.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        jTable2.setGridColor(new java.awt.Color(252, 253, 29));
         jScrollPane2.setViewportView(jTable2);
 
         jLabel3.setText("Numero");
@@ -107,6 +124,10 @@ public class FormOne extends javax.swing.JInternalFrame {
 
         jLabel4.setText("Note");
 
+        jlbld.setColumns(20);
+        jlbld.setRows(5);
+        jScrollPane1.setViewportView(jlbld);
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -116,35 +137,37 @@ public class FormOne extends javax.swing.JInternalFrame {
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jScrollPane2, javax.swing.GroupLayout.Alignment.TRAILING)
                     .addGroup(layout.createSequentialGroup()
+                        .addComponent(labelinfo, javax.swing.GroupLayout.PREFERRED_SIZE, 422, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(lblin, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(ComboLista, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(18, 18, 18)
+                        .addComponent(BtnGo)
+                        .addGap(49, 49, 49)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
+                                .addComponent(jLabel3)
+                                .addGap(26, 26, 26)
+                                .addComponent(FieldNum, javax.swing.GroupLayout.PREFERRED_SIZE, 57, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addGroup(layout.createSequentialGroup()
+                                .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 75, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(2, 2, 2)
+                                .addComponent(FieldData, javax.swing.GroupLayout.PREFERRED_SIZE, 84, javax.swing.GroupLayout.PREFERRED_SIZE)))
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(layout.createSequentialGroup()
-                                .addComponent(ComboLista, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addGap(18, 18, 18)
-                                .addComponent(BtnGo)
-                                .addGap(28, 28, 28)
-                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                                    .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
-                                        .addComponent(jLabel3)
-                                        .addGap(26, 26, 26)
-                                        .addComponent(FieldNum, javax.swing.GroupLayout.PREFERRED_SIZE, 57, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                    .addGroup(layout.createSequentialGroup()
-                                        .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 75, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                        .addGap(2, 2, 2)
-                                        .addComponent(FieldData, javax.swing.GroupLayout.PREFERRED_SIZE, 84, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addGroup(layout.createSequentialGroup()
-                                        .addGap(26, 26, 26)
-                                        .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 80, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED))
-                                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                        .addComponent(jLabel4)
-                                        .addGap(29, 29, 29)))
-                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(FieldName, javax.swing.GroupLayout.PREFERRED_SIZE, 275, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addComponent(FieldNote, javax.swing.GroupLayout.PREFERRED_SIZE, 189, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                            .addComponent(labelinfo, javax.swing.GroupLayout.PREFERRED_SIZE, 422, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addGap(0, 43, Short.MAX_VALUE)))
+                                .addGap(26, 26, 26)
+                                .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 80, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED))
+                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(jLabel4)
+                                .addGap(29, 29, 29)))
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(FieldName, javax.swing.GroupLayout.PREFERRED_SIZE, 275, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(FieldNote, javax.swing.GroupLayout.PREFERRED_SIZE, 189, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGap(0, 22, Short.MAX_VALUE))
+                    .addComponent(jScrollPane1))
                 .addContainerGap())
         );
         layout.setVerticalGroup(
@@ -165,10 +188,13 @@ public class FormOne extends javax.swing.JInternalFrame {
                     .addComponent(FieldNote, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel4))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(labelinfo, javax.swing.GroupLayout.PREFERRED_SIZE, 28, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(labelinfo, javax.swing.GroupLayout.PREFERRED_SIZE, 28, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(lblin, javax.swing.GroupLayout.DEFAULT_SIZE, 31, Short.MAX_VALUE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 360, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(21, Short.MAX_VALUE))
+                .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 354, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(8, 8, 8)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
         );
 
         pack();
@@ -224,6 +250,11 @@ public class FormOne extends javax.swing.JInternalFrame {
   
 // sparo tutto sul sorter iniziale 
        sorter.setRowFilter(serviceFilter);    
+       
+       String Tot;
+       Tot=  Integer.toString(sorter.getViewRowCount());
+       lblin.setText(Tot);
+       
         
         /*
          * Il filtro nasconde le righe che non matchano come espressione regolare, con il testo del campo fielddate, 
@@ -238,18 +269,15 @@ public class FormOne extends javax.swing.JInternalFrame {
      
     }                                     
 
-
-
     private void FieldNoteActionPerformed(java.awt.event.ActionEvent evt) {                                          
         // TODO add your handling code here:
     }                                         
 
-    
     public void CoreSelect() throws IOException {
-        
-        
-         File f = new File("NpGet/sezioni.csv");
-        String csvFile = f.getPath();
+
+        String Path= ricavaPath();
+        String csvFile=Path+"sezioni.csv";
+       
  
      
         // mettere a null una variabile non inizializzata e' abbastanza diffuso.
@@ -289,11 +317,19 @@ public class FormOne extends javax.swing.JInternalFrame {
     
     
     
+ 
     public void CoreResult() throws IOException {
         
-   File f = new File("NpGet/archivio.csv");
-        String csvFilearch = f.getPath();
+     
+         String Path= ricavaPath();
+         String FileGet=Path+"archivio.csv";
+         
+     
         
+     
+   
+       
+    jlbld.setText(Path);
         String line = null; //vedi sopra
  
         //preparo una lista che contenga come ciascun elemento una riga del file, spezzata fra le virgole
@@ -312,7 +348,7 @@ public class FormOne extends javax.swing.JInternalFrame {
          */
  
         //vedi sopra per la sintassi try(...) {...}
-        try(FileReader csvArchReader = new FileReader(csvFilearch); BufferedReader br = new BufferedReader(csvArchReader)) {
+        try(FileReader csvArchReader = new FileReader(FileGet); BufferedReader br = new BufferedReader(csvArchReader)) {
  
             while ((line = br.readLine()) != null) {
  
@@ -362,10 +398,7 @@ public class FormOne extends javax.swing.JInternalFrame {
         }
  
     }
- 
-    
-     
-       //Questo e' tutto ok!
+    //Questo e' tutto ok!
     private void jTable2MouseClicked(java.awt.event.MouseEvent evt) {
         // TODO add your handling code here:
         Point point = evt.getPoint();
@@ -378,82 +411,48 @@ public class FormOne extends javax.swing.JInternalFrame {
                         " Vale: " + jTable2.getValueAt(row, column)
         );
     }
-    
-    
-    public void OpenFileOnCLick(java.awt.event.MouseEvent evt){
+        
+    public void OpenFileOnCLick(java.awt.event.MouseEvent evt) throws IOException{
         //Tipo di ricerca su questa. mi serve il primo id  per uguaglianza 
         //e il terzo come nome file da aprire 
         //NB: Possono essere anche + file ma al massimo sono 3 o 4 .. 
         // e li apro tutti insieme per il momento ... 
         //"1","3","../f/files/f_1004/9/21/TT1xSFisdO_288_.pdf"
-        
-        
-        File f = new File("NpGet/archfile.csv");
-        String archfile = f.getPath();
          Point point = evt.getPoint();
-          String line = null; 
-           int row;
-           //column;
+           int row, column;
        row = jTable2.rowAtPoint(point);
-   //     column = jTable2.columnAtPoint(point);
+       column = jTable2.columnAtPoint(point);
+       
+       //ottengo il valore con il quale filtrerò gli id di archfile.csv
          String valid;
           valid =(String) jTable2.getValueAt(row,0);
-          
-   List<String[]> righeArcFile = new ArrayList<>();
-     
-        try(FileReader csvFile = new FileReader(archfile); BufferedReader br = new BufferedReader(csvFile)) {
- 
-  while ((line = br.readLine()) != null) {
-   righeArcFile.add(line.split(","));
- 
-  }
-  
-  
-  
-               
-  int i=0;
-     for (String[] riga : righeArcFile) {
-                //per ogni riga letta dal file e salvata in righeArchivio creo un vettore
-    // final Vector<String> rigaDati = new Vector<>();
-                //aggiungo i campi di interesse nel vettore
-      //          rigaDati.add(riga[0]);
-        //        rigaDati.add(riga[2]);
-                
- labelinfo.setText("id:_"+riga[0]+"-Val_"+GetFileName(riga[2])+"-cek_"+valid);
- //QUI nn cè niente da fare ..         
- if(valid == riga[0]){
-                System.out.println("Successo:"+riga[2]);
-              }          
-            
-                //aggiungo il vettore al modello della tabella
-                //modelloArch.addRow(rigaDati);
-      i++;    
-     }
- 
+//           labelinfo.setText("id:_"+riga[1]+"-Val_"+GetFileName(riga[2])+"-cek_"+valid);
+                    labelinfo.setText("id:_"+"-Val_"+"-cek_"+valid);
+  // LetturaFile(GetFileName());
+//         lblin.setText("pc"+ArchivioFiles(valid).toString());
+lblin.setText("pc"+(valid));
+
 
  
-  
-          
-      //        System.out.println(righeArcFile.toString());
-            } catch (IOException e) {
-            e.printStackTrace();
-        }
-  
+  JFrame frame = new JFrame("Archer_File");
+        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+
+        //Create and set up the content pane.
+        FileTable newContentPane = new FileTable(valid);
+        newContentPane.setOpaque(true); //content panes must be opaque
+        frame.setContentPane(newContentPane);
+
+        //Display the window.
+        frame.pack();
+        frame.setVisible(true);
+
+
     }
+    
+    
+
  
-    public static String GetFileName(String path){
-        
-        return path.substring(path.lastIndexOf("/")+1, path.length());
-        
     
-    }
-  
-    
-    
-    
-    
-
-
 
     // Variables declaration - do not modify                     
     private javax.swing.JButton BtnGo;
@@ -466,8 +465,45 @@ public class FormOne extends javax.swing.JInternalFrame {
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
+    private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JTable jTable2;
+    private javax.swing.JTextArea jlbld;
     private javax.swing.JLabel labelinfo;
+    private javax.swing.JLabel lblin;
     // End of variables declaration                   
+
+   public String ricavaPath() {
+    //    throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    
+        /*  ESECUZIONE IMPORTANTISSIMA PER DEPLOIDARE ... 
+            /* MODO PER LOCALHOST     */
+ //   String finalName = System.getProperty("user.dir")+"/NpGet/";
+   
+ /* FINE  MODO PER LOCALHOST     */
+
+        
+        
+        
+        /* METODO CON ROOT STANDALONE CON NPGET */
+    String classPath=System.getProperty("java.class.path");
+         System.getProperties().toString();        
+     File classDir = new File(classPath);
+String Path = classDir.getName();
+    String finalName=classPath.replace(Path, "NpGet/");
+   /* FINE METODO PER STANDALONE  */
+        
+        
+        
+return    finalName;
+    
+    
+    }
+
+
+  
+
+  
+
+
 }
