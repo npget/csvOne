@@ -152,27 +152,13 @@ Logger.getLogger(FileTable.class.getName()).log(Level.SEVERE, null, ex);
     public static String GetFileName(String path){
    File userFile = new File(path);
 String Path = userFile.getName();
-        
-        
-   //  String Path=path.substring(path.lastIndexOf("/")+1, path.length());
-        
-     
-      /* 
-         if ( Path.endsWith("\"")){
-            Path= Path.substring(1, Path.length() - 1);
-  } else{
-            Path= Path;
-    } 
-        */ 
-   
    return    Path = Path.replaceAll("\"","");
-   // return Path .;
  
     }
     
     
-      private void LetturaFile(String NameFinal)throws FileNotFoundException, IOException { //To change body of generated methods, choose Tools | Templates.
-// String FileGet = System.getProperty("user.dir")+"/NpGet/f/"+NameFinal;
+      private void LetturaFile(String NameFinal)throws FileNotFoundException, IOException { 
+
     String FileGet = ricavaPather()+"f/"+NameFinal;    
     File fileF= new File (FileGet);
       
@@ -183,8 +169,7 @@ String Path = userFile.getName();
            
         Desktop.getDesktop().open(fileF);
     } catch (IOException ex) {
-//          System.out.println("ERRORE"+System.getProperties());
-        // no application registered for PDFs
+
     }
 }
          
